@@ -93,6 +93,14 @@ class Add_Band_Admin {
 
 	public function add_plugin_admin_menu() {
   		add_menu_page('Add Album or Band to Display in ShortCode', 'Add Band', 'manage_options','Add_BAND_Menu',  array($this, 'display_add_band_band_main') );
+		add_submenu_page( 
+          		null            // -> Set to null - will hide menu link
+        		, 'Add Album'    // -> Page Title
+        		, 'Add Ablum'    // -> Title that would otherwise appear in the menu
+        		, 'manage_options' // -> Capability level
+        		, 'addnewalbum'   // -> Still accessible via admin.php?page=menu_handle
+        		,  array($this, 'display_add_band_album_add') // -> To render the page
+    );
 		add_submenu_page('Add_BAND_Menu', 'Add Album to Display in ShortCode', 'Add Album', 'manage_options',  $this->plugin_name, array($this, 'display_add_band_album_main'));
 		add_submenu_page( 
           		null            // -> Set to null - will hide menu link
@@ -112,19 +120,6 @@ class Add_Band_Admin {
     );
 	}
 
-	/**
-	public function add_plugin_band_menu() {
-			
-		add_options_page( 'Add Album to Display in ShortCode', 'Add Album', 'manage_options', $this->plugin_name, array($this, 'display_add_band_band_edit'));
-
-	}
-
-	public function add_plugin_album_menu() {
-
-		add_options_page( 'Add Band to Display in ShortCode', 'Add Band', 'manage_options', $this->plugin_name, array($this, 'display_add_band_album_edit'));
-
-	}
-	**/
 
 public function add_action_links( $links ) {
    	$settings_link = array(
@@ -132,11 +127,16 @@ public function add_action_links( $links ) {
    );
    return array_merge(  $settings_link, $links );
 }
-
+#ALBUM
 public function display_add_band_album_main() {
-    include_once( 'partials/add-band-alum-main.php' );
+    include_once( 'partials/add-band-album-main.php' );
 }
 
+public function display_add_band_album_add() {
+    include_once( 'partials/add-band-album-add.php' );
+}
+    
+#BAND    
 public function display_add_band_band_main() {
     include_once( 'partials/add-band-band-main.php' );
 }

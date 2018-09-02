@@ -104,7 +104,7 @@ class Add_Band {
 		 * core plugin.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-add-band-loader.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-add-band-custom.php';
+        	require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-add-band-custom.php';
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
@@ -158,8 +158,6 @@ class Add_Band {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_plugin_admin_menu' );
-		#$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_plugin_band_menu' );
-		#$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_plugin_album_menu' );
 		
 
 		$plugin_basename = plugin_basename( plugin_dir_path( __DIR__ ) . $this->plugin_name . '.php' );
@@ -169,12 +167,12 @@ class Add_Band {
 		
 		#Album
                 $this->loader->add_action('admin_post_delete_list_entry', $plugin_admin, 'delete_list_entry');
-                $this->loader->add_action('admin_post_add_list_entry', $plugin_admin, 'add_list_entry');
+                $this->loader->add_action('admin_post_add_album_list_entry', $plugin_admin, 'add_album_list_entry');
 	
 		#Band
                 $this->loader->add_action('admin_post_delete_band_list_entry', $plugin_admin, 'delete_band_list_entry');
                 $this->loader->add_action('admin_post_add_band_list_entry', $plugin_admin, 'add_band_list_entry');
-		$this->loader->add_action('admin_post_edit_band_list_entry', $plugin_admin, 'edit_band_list_entry');
+                $this->loader->add_action('admin_post_edit_band_list_entry', $plugin_admin, 'edit_band_list_entry');
 		
 	}
 

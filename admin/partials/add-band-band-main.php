@@ -30,11 +30,6 @@
 	</tr>
 
 <?php
-		/*
-	    foreach ($band_list as ["id" => $id, "Album_Name" => $Album_Name, "Band_Name" => $Band_Name, "Datum" => $Datum, "Format" => $Format, "Img_URL" => $Img_URL, "Shop_Link" => $Shop_Link, "soldout_state" => $soldout_state ]) {
-		$login_logo = wp_get_attachment_image_src( $Img_URL, 'thumbnail' );
-		$login_logo_url = $login_logo[0];
-		 */
 	    foreach ($band_list as ["id" => $id, "Band_Name" => $Band_Name ] ){
 	?>
 	<tr valign="top">
@@ -54,7 +49,6 @@
 	<?php
 	}
 	?>
-	        <a href="admin.php?page=addnewband"; >Band hinzufügen</a>
 </table>
-
+<a class="button" href="admin.php?page=addnewband">Band hinzufügen</a>
 

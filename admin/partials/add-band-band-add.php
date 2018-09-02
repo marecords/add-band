@@ -17,8 +17,7 @@
 
     <?php
     settings_fields($this->plugin_name);
-do_settings_sections($this->plugin_name);
-echo 'TEST';	
+    do_settings_sections($this->plugin_name);
 
 ?>
 
