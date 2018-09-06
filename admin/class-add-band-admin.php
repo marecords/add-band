@@ -215,6 +215,58 @@ public function add_list_entry() {
         	update_option('add-band-album-list',$band_list_old);
 	}
 }
+    
+    public function add_album_list_entry(){
+        $album_list_old= get_option('add-band-album-list');
+	    var_dump($album_list_old);
+        $input=$_REQUEST['add-band'];
+        if(empty(sanitize_text_field($input['current_id']))||empty(sanitize_text_field($input['current_album_name']))){
+                die("Mar Nummer oder Album Name fehlen");
+        }
+        $album_list_new[0]["id"]=sanitize_text_field($input['current_id']);
+        $album_list_new[0]["Album_Name"] = sanitize_text_field($input['current_album_name']);
+        $album_list_new[0]["Band_Name"] = sanitize_text_field($input['current_band_name']);
+        $album_list_new[0]["soldout_state"] = $input['current_soldout_state'];
+        if(isset($input['current_date'])){
+            $album_list_new[0]["Datum"] = sanitize_text_field($input['current_date']);    
+        }
+        if(!empty($input['current_format'])){
+            $album_list_new[0]["Format"] = sanitize_text_field($input['current_format']);
+        }
+        if(!empty($input['login_logo_id'])){
+            $album_list_new[0]["Img_URL"] = $input['login_logo_id'];
+        }
+        if(!empty(esc_url($input['current_album_link']))){
+            $album_list_new[0]["Album_Link"] = esc_url($input['current_album_link']);
+        }
+        if(!empty(esc_url($input['current_shop_link']))){
+            $album_list_new[0]["Shop_Link"] = esc_url($input['current_shop_link']);
+        }
+        if(!empty($input['track'])){
+            $album_list_new[0]["track_list"] = $input['track'];
+        }
+        /*
+        $album_list_new[0] =
+                [
+                        "id" => sanitize_text_field($input['current_id']), 
+                        "Album_Name" => sanitize_text_field($input['current_album_name']), 
+                        "Band_Name" => sanitize_text_field($input['current_band_name']), 
+                        "Datum" => sanitize_text_field($input['current_date']), 
+                        "Format" => sanitize_text_field($input['current_format']), 
+                        "Img_URL" =>  $input['login_logo_id'] , 
+                        "Album_Link" =>  esc_url($input['current_album_link']), 
+                        "Shop_Link" =>  esc_url($input['current_shop_link']), 
+                        "soldout_state" => $input['current_soldout_state'],
+                        "track_list" => $input['track']
+                ];
+                */
+	if(empty($album_list_old)){
+        	update_option('add-band-album-list',$album_list_new);
+	}else {
+        	array_push($album_list_old, $album_list_new[0]);
+        	update_option('add-band-album-list',$album_list_old);
+	}
+    }
 
 public function add_band_list_entry() {
 	

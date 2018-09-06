@@ -22,9 +22,9 @@
 
 ?>
 
-<form action="admin-post.php" method="post">
+<form action="admin-post.php" method="post" id="carform">
     <input type="hidden" name="action" value="add_album_list_entry">
-    <table class="form-table">
+    <table class="form-table" id="track_list">
 
 
         <tr>
@@ -48,15 +48,17 @@
                 <?php esc_attr_e( 'Band-Name', 'WpAdminStyle' ); ?>
             </td>
             <td>
-                <select  id="current_band_name" name="<?php echo $this->plugin_name; ?>[current_band_    name]" value="Band_Name">
+                <select id="current_band_name" name="<?php echo $this->plugin_name; ?>[current_band_name]" value="Band_Name" form="carform">
                     <?php
-                    foreach ($band_list as ["Band_Name" => $Band_Name]){
+                    foreach ($band_list as ["Band_Name" => $Band_Name,"id"=>$id]){
                     ?>
-                        <option value="<?php echo $Band_Name ?>"><?php echo $Band_Name ?></option>
+                    <option value="<?php echo $id ?>">
+                        <?php echo $Band_Name ?>
+                    </option>
                     <?php
                     }
                     ?>
-                </select> 
+                </select>
             </td>
         </tr>
         <tr>
@@ -102,20 +104,26 @@
                 <?php esc_attr_e( 'Soldout', 'WpAdminStyle' ); ?>
             </td>
             <td>
-                <input type="checkbox" id="current_soldout_state" name="<?php echo $this->plugin_name;?>[current_soldout_state]" />
+                <input type="checkbox" id="current_soldout_state" name="<?php echo $this->plugin_name;?>[current_soldout_state]" value="false" />
+            </td>
+        </tr>
+        <tr >
+            <td>
+                <?php esc_attr_e( 'Add Track', 'WpAdminStyle' ); ?>
+            </td>
+            <td >
+                <button id="album_add_track_line_button">Neuen Song hinzufügen</button>
             </td>
         </tr>
         <tr>
             <td>
+
                 <?php esc_attr_e( 'Aktion', 'WpAdminStyle' ); ?>
             </td>
             <td>
                 <input type="submit" value="Add Entry">
             </td>
         </tr>
-
-
-
 
     </table>
 
