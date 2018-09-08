@@ -36,44 +36,43 @@
 	</tr>
 
 	<?php
-        foreach ($album_list as $val => $val_value){
-	    foreach ($val_value as [ "Id" => $id, "Album_Name" => $Album_Name, "Band_Name" => $Band_Name, "Datum" => $Datum, "Format" => $Format, "Img_URL" => $Img_URL, "Shop_Link" => $Shop_Link, "soldout_state" => $soldout_state ]) {
-		$login_logo = wp_get_attachment_image_src( $Img_URL, 'thumbnail' );
-    		$login_logo_url = $login_logo[0];
+        foreach ($album_list as $albums => $album){
+		$login_logo = wp_get_attachment_image_src( $album['Img_URL'], 'thumbnail' );
+        $login_logo_url = $login_logo[0];
 	?>
 	<tr valign="top">
 		<td scope="row">
-			<a class="button" href="admin-post.php?action=delete_album_list_entry&data=<?php echo $id; ?>">Löschen</a>
-            <a class="button" href="admin.php?page=editalbum&id=<?php echo $id; ?>">Bearbeiten</a>
+			<a class="button" href="admin-post.php?action=delete_album_list_entry&data=<?php echo $album['Id']; ?>">Löschen</a>
+            <a class="button" href="admin.php?page=editalbum&id=<?php echo $album['Id']; ?>">Bearbeiten</a>
 		</td>
 		<td scope="row">
-			<?php echo $id; ?>
+			<?php echo $album['Id']; ?>
 		</td>
 		<td scope="row">
-			<?php echo $Album_Name; ?>
+			<?php echo $album['Album_Name']; ?>
 		</td>
 		<td scope="row">
-			<?php echo $Band_Name; ?>
+			<?php echo $album['Band_Name']; ?>
 		</td>
 		<td scope="row">
-			<?php echo $Datum; ?>
+			<?php echo $album['Datum']; ?>
 		</td>
 		<td scope="row">
-			<?php echo $Format; ?>
+			<?php echo $album['Format']; ?>
 		</td>
 		<td scope="row">
-			<img src=" <?php echo $login_logo_url; ?>"  style="height:50px;">
+			<img src=" <?php echo $album['login_logo_url']; ?>"  style="height:50px;">
 		</td>
 		<td scope="row">
-			<?php echo $Shop_Link; ?>
+			<?php echo $album['Shop_Link']; ?>
 		</td>
 		<td scope="row">
-		<input type="checkbox"  onclick="return false;"  <?php if ($soldout_state == "on"){ ?> checked <?php } ?> />
+		<input type="checkbox"  onclick="return false;"  <?php if ($album['soldout_state'] == "on"){ ?> checked <?php } ?> />
 		</td>
 	</tr>
 	<?php
 	}
-        }
+        
 	?>
 </table>
 <a class="button" href="admin.php?page=addnewalbum">Album hinzufügen</a>

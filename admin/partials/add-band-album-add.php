@@ -22,11 +22,9 @@
 
 ?>
 
-<form action="admin-post.php" method="post" id="carform">
+<form action="admin-post.php" method="post">
     <input type="hidden" name="action" value="add_album_list_entry">
     <table class="form-table" id="track_list">
-
-
         <tr>
             <td>
                 <?php esc_attr_e( 'MA-Nummer', 'WpAdminStyle' ); ?>
@@ -48,17 +46,15 @@
                 <?php esc_attr_e( 'Band-Name', 'WpAdminStyle' ); ?>
             </td>
             <td>
-                <select id="current_band_id" name="<?php echo $this->plugin_name; ?>[current_band_id]" value="Band_id" form="carform">
+                <select id="current_band_id" name="<?php echo $this->plugin_name; ?>[current_band_id]" value="Band_id">
                     <?php
-                    //foreach ($band_list as ["Band_Name" => $Band_Name,"id"=>$id]){
-                        foreach ($band_list as $val => $val_value){
-                        foreach ($val_value as ["id" => $id, "Band_Name" => $Band_Name ] ){
+                        foreach ($band_list as $bands => $band){
                     ?>
-                    <option value="<?php echo $id ?>">
-                        <?php echo $Band_Name ?>
+                    <option value="<?php echo $band['id'] ?>">
+                        <?php echo $band['Band_Name'] ?>
                     </option>
                     <?php
-                    }}
+                    }
                     ?>
                 </select>
             </td>
@@ -106,7 +102,7 @@
                 <?php esc_attr_e( 'Soldout', 'WpAdminStyle' ); ?>
             </td>
             <td>
-                <input type="checkbox" id="current_soldout_state" name="<?php echo $this->plugin_name;?>[current_soldout_state]" value="false" />
+                <input class="checkbox" type="checkbox" id="current_soldout_state" name="<?php echo $this->plugin_name;?>[current_soldout_state]" value="unchecked" />
             </td>
         </tr>
         <tr >
@@ -128,5 +124,11 @@
         </tr>
 
     </table>
-
+    
+    <?php
+		$settings = array( 'textarea_name' => 'album_description');
+		$editor_id = 'album_editor';
+		wp_editor( '', $editor_id , $settings );
+	?>
+	 
 </form>

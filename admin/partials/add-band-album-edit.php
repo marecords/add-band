@@ -21,13 +21,13 @@
     $band_list = get_option('add-band-band-list');
     $album_list = get_option('add-band-album-list');
     $id = $_REQUEST['id'];  
-    $album_list_entry=$album_list[$id][0];
+    $album_list_entry=$album_list[$id];
     var_dump($album_list_entry);
  
 
 ?>
 
-<form action="admin-post.php" method="post" id="carform">
+<form action="admin-post.php" method="post">
     <input type="hidden" name="action" value="add_album_list_entry">
     <table class="form-table" id="track_list">
         <tr>
@@ -51,17 +51,15 @@
                 <?php esc_attr_e( 'Band-Name', 'WpAdminStyle' ); ?>
             </td>
             <td>
-                <select id="current_band_name" name="<?php echo $this->plugin_name; ?>[current_band_name]"  value="<?php echo $album_list_entry['Band_Name'] ?>" form="carform">
+                <select id="current_band_id" name="<?php echo $this->plugin_name; ?>[current_band_id]" value="Band_id" form="carform">
                     <?php
-                    foreach ($band_list as $val => $val_value){
-                         foreach ($val_value as ["id" => $id, "Band_Name" => $Band_Name ] ){
+                        foreach ($band_list as $bands => $band){
                     ?>
-                    <option value="<?php echo $id ?>">
-                        <?php echo $Band_Name ?>
+                    <option value="<?php echo $band['id'] ?>">
+                        <?php echo $band['Band_Name'] ?>
                     </option>
                     <?php
                     }
-                                       }
                     ?>
                 </select>
             </td>
@@ -144,5 +142,10 @@
              
         <?php } ?>
     </table>
+     <?php
+		$settings = array( 'textarea_name' => 'album_description');
+		$editor_id = 'album_editor';
+		wp_editor( $album_list_entry['description'], $editor_id , $settings );
+	?>
 
 </form>

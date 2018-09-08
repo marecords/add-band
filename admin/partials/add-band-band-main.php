@@ -18,7 +18,10 @@
 	$band_list = get_option('add-band-band-list');
 	settings_fields($this->plugin_name);
 	do_settings_sections($this->plugin_name);
-	var_dump($band_list);
+	//var_dump($band_list);
+    $add_band_add_entry = new Add_band_add_entry();
+    $add_band_add_entry-> add_entry_create_post();
+    
 ?>
 
 	<table class="form-table">

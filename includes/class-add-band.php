@@ -104,7 +104,8 @@ class Add_Band {
 		 * core plugin.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-add-band-loader.php';
-        	require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-add-band-custom.php';
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-add-band-custom.php';
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-add-band-album-display.php';
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
