@@ -14,13 +14,9 @@
 ?>
 
 
-<?php
-    	//Grab all options      
-    	$album_list = get_option('add-band-album-list');
-
-?>
-
     <?php
+    //Grab all options      
+    $album_list = get_option('add-band-album-list');
     settings_fields($this->plugin_name);
     do_settings_sections($this->plugin_name);
 	
@@ -35,19 +31,20 @@
 		<th><?php esc_attr_e( 'Datum', 'WpAdminStyle' ); ?></th>
 		<th><?php esc_attr_e( 'Format', 'WpAdminStyle' ); ?></th>
 		<th><?php esc_attr_e( 'Cover-Link', 'WpAdminStyle' ); ?></th>
-		<th><?php esc_attr_e( 'Album-Link', 'WpAdminStyle' ); ?></th>
 		<th><?php esc_attr_e( 'Shop-Link', 'WpAdminStyle' ); ?></th>
 		<th><?php esc_attr_e( 'Soldout', 'WpAdminStyle' ); ?></th>
 	</tr>
 
 	<?php
-	    foreach ($album_list as ["id" => $id, "Album_Name" => $Album_Name, "Band_Name" => $Band_Name, "Datum" => $Datum, "Format" => $Format, "Img_URL" => $Img_URL, "Shop_Link" => $Shop_Link, "soldout_state" => $soldout_state ]) {
+        foreach ($album_list as $val => $val_value){
+	    foreach ($val_value as [ "Id" => $id, "Album_Name" => $Album_Name, "Band_Name" => $Band_Name, "Datum" => $Datum, "Format" => $Format, "Img_URL" => $Img_URL, "Shop_Link" => $Shop_Link, "soldout_state" => $soldout_state ]) {
 		$login_logo = wp_get_attachment_image_src( $Img_URL, 'thumbnail' );
     		$login_logo_url = $login_logo[0];
 	?>
 	<tr valign="top">
 		<td scope="row">
-			<a href="admin-post.php?action=delete_list_entry&data=<?php echo $id; ?>">Löschen</a>
+			<a class="button" href="admin-post.php?action=delete_album_list_entry&data=<?php echo $id; ?>">Löschen</a>
+            <a class="button" href="admin.php?page=editalbum&id=<?php echo $id; ?>">Bearbeiten</a>
 		</td>
 		<td scope="row">
 			<?php echo $id; ?>
@@ -68,9 +65,6 @@
 			<img src=" <?php echo $login_logo_url; ?>"  style="height:50px;">
 		</td>
 		<td scope="row">
-			<?php echo $Album_Link; ?>
-		</td>
-		<td scope="row">
 			<?php echo $Shop_Link; ?>
 		</td>
 		<td scope="row">
@@ -79,6 +73,7 @@
 	</tr>
 	<?php
 	}
+        }
 	?>
 </table>
 <a class="button" href="admin.php?page=addnewalbum">Album hinzufügen</a>

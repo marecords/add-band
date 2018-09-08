@@ -101,6 +101,14 @@ class Add_Band_Admin {
         		, 'addnewalbum'   // -> Still accessible via admin.php?page=menu_handle
         		,  array($this, 'display_add_band_album_add') // -> To render the page
     );
+        add_submenu_page( 
+          		null            // -> Set to null - will hide menu link
+        		, 'Edit Album'    // -> Page Title
+        		, 'Edit Album'    // -> Title that would otherwise appear in the menu
+        		, 'manage_options' // -> Capability level
+        		, 'editalbum'   // -> Still accessible via admin.php?page=menu_handle
+        		,  array($this, 'display_add_band_album_edit') // -> To render the page
+    );
 		add_submenu_page('Add_BAND_Menu', 'Add Album to Display in ShortCode', 'Add Album', 'manage_options',  $this->plugin_name, array($this, 'display_add_band_album_main'));
 		add_submenu_page( 
           		null            // -> Set to null - will hide menu link
@@ -135,7 +143,9 @@ public function display_add_band_album_main() {
 public function display_add_band_album_add() {
     include_once( 'partials/add-band-album-add.php' );
 }
-    
+public function display_add_band_album_edit() {
+	 include_once( 'partials/add-band-album-edit.php' );
+}   
 #BAND    
 public function display_add_band_band_main() {
     include_once( 'partials/add-band-band-main.php' );
@@ -157,143 +167,116 @@ public function display_add_band_band_edit() {
 
 public function validate($input) {
 	#usort($band_list_old, function($a, $b) {
+    /*
 	usort($input, function($a, $b) {
+        
 		if ($a["id"] == $b["id"]) return 0;
     			return ($a["id"] < $b["id"]) ? -1 : 1;
-		}  );
+		}
+        
+        if ($a == $b) return 0;
+    			return ($a < $b) ? -1 : 1;
+		}
+        );
+    */
 	return $input;
 }
 
-
-public function delete_list_entry() {
-	var_dump($_REQUEST);
-        $options = get_option($this->plugin_name);
+#######
+#ALBUM#
+#######
+public function delete_album_list_entry() {
+        $options = get_option('add-band-album-list');
         for($i=0;$i < sizeof($options); $i++ ){
                 if($options[$i]["id"]==$_REQUEST['data']){
+                        echo 'TEST';
                         array_splice($options,$i,1);
-                        update_option($this->plugin_name,$options);
+                        update_option('add-band-album-list',$options);
                 }
         }
         status_header(200);
         die("Server received '{$_REQUEST['data']}' from your browser.");
 }
-
-public function delete_band_list_entry() {
-        $add_band_add_entry = new Add_band_add_entry();
-        $add_band_add_entry->delete_entry_delte_entry($_REQUEST['data']);
-    /*
-        $options = get_option('add-band-band-list');
-        for($i=0;$i < sizeof($options); $i++ ){
-                if($options[$i]["id"]==$_REQUEST['data']){
-                        array_splice($options,$i,1);
-                        update_option('add-band-band-list',$options);
-                }
-        }
-        */
-        status_header(200);
-        die("Server received '{$_REQUEST['data']}' from your browser.");
-}
-
-public function add_list_entry() {
-	$band_list_old= get_option('add-band-album-list');
-	var_dump($band_list_old);
-        $input=$_REQUEST['add-band'];
-        if(empty(wp_get_attachment_image_src( $input['login_logo_id'] ))){
-                die("invaild image ");
-        }
-        if ((empty($input['current_shop_link']) || $input['current_shop_link'] == "Shop Link") && empty($input['current_soldout_state']) ){
-                die("invaild shop url");
-        }
-        $album_list_new[0] =
-                [
-                        "id" => sanitize_text_field($input['current_id']), "Album_Name" => sanitize_text_field($input['current_album_name']), "Band_Name" => sanitize_text_field($input['current_band_name']), "Datum" => sanitize_text_field($input['current_date']), "Format" => sanitize_text_field($input['current_format']), "Img_URL" =>  $input['login_logo_id'] , "Album_Link" =>  esc_url($input['current_album_link']), "Shop_Link" =>  esc_url($input['current_shop_link']), "soldout_state" => $input['current_soldout_state']
-                ];
-	if(empty($band_list_old)){
-        	update_option('add-band-album-list',$album_list_new);
-	}else {
-        	array_push($band_list_old, $band_list_new[0]);
-        	update_option('add-band-album-list',$band_list_old);
-	}
-}
-    
-    public function add_album_list_entry(){
+     
+public function add_album_list_entry(){
         $album_list_old= get_option('add-band-album-list');
-	    var_dump($album_list_old);
-        $input=$_REQUEST['add-band'];
-        if(empty(sanitize_text_field($input['current_id']))||empty(sanitize_text_field($input['current_album_name']))){
+        $band_list= get_option('add-band-band-list');
+        $input=$_REQUEST['add-band'];   if(empty(sanitize_text_field($input['current_id']))||empty(sanitize_text_field($input['current_album_name']))){
                 die("Mar Nummer oder Album Name fehlen");
         }
-        $album_list_new[0]["id"]=sanitize_text_field($input['current_id']);
-        $album_list_new[0]["Album_Name"] = sanitize_text_field($input['current_album_name']);
-        $album_list_new[0]["Band_Name"] = sanitize_text_field($input['current_band_name']);
-        $album_list_new[0]["soldout_state"] = $input['current_soldout_state'];
-        if(isset($input['current_date'])){
-            $album_list_new[0]["Datum"] = sanitize_text_field($input['current_date']);    
-        }
-        if(!empty($input['current_format'])){
-            $album_list_new[0]["Format"] = sanitize_text_field($input['current_format']);
-        }
-        if(!empty($input['login_logo_id'])){
-            $album_list_new[0]["Img_URL"] = $input['login_logo_id'];
-        }
-        if(!empty(esc_url($input['current_album_link']))){
-            $album_list_new[0]["Album_Link"] = esc_url($input['current_album_link']);
-        }
-        if(!empty(esc_url($input['current_shop_link']))){
-            $album_list_new[0]["Shop_Link"] = esc_url($input['current_shop_link']);
-        }
-        if(!empty($input['track'])){
-            $album_list_new[0]["track_list"] = $input['track'];
-        }
-        /*
-        $album_list_new[0] =
-                [
-                        "id" => sanitize_text_field($input['current_id']), 
-                        "Album_Name" => sanitize_text_field($input['current_album_name']), 
-                        "Band_Name" => sanitize_text_field($input['current_band_name']), 
-                        "Datum" => sanitize_text_field($input['current_date']), 
-                        "Format" => sanitize_text_field($input['current_format']), 
-                        "Img_URL" =>  $input['login_logo_id'] , 
-                        "Album_Link" =>  esc_url($input['current_album_link']), 
-                        "Shop_Link" =>  esc_url($input['current_shop_link']), 
-                        "soldout_state" => $input['current_soldout_state'],
-                        "track_list" => $input['track']
-                ];
-                */
-	if(empty($album_list_old)){
-        	update_option('add-band-album-list',$album_list_new);
-	}else {
-        	array_push($album_list_old, $album_list_new[0]);
-        	update_option('add-band-album-list',$album_list_old);
-	}
+        $id=sanitize_text_field($input['current_id']);
+        $band_id=sanitize_text_field($input['current_band_id']);
+        $album_list_new=[
+            "Id" => $id,
+            "Album_Name" => sanitize_text_field($input['current_album_name']),
+            "Band_Id" => sanitize_text_field($input['current_band_id']),
+            "Band_Name" => $band_list[$band_id][0]["Band_Name"],
+            "soldout_state" => $input['current_soldout_state'],
+            "Datum" => sanitize_text_field($input['current_date']),
+            "Format" => sanitize_text_field($input['current_format']),
+            "Img_URL" => $input['login_logo_id'],
+            "Shop_Link" => esc_url($input['current_shop_link']),
+            "track_list" => $input['track']
+        ];
+        
+        $album_list_old[$id][]= $album_list_new;
+        
+        update_option('add-band-album-list',$album_list_old);
+        
     }
-
+public function edit_album_list_entry() {
+    $album_list_old= get_option('add-band-album-list');
+    $input=$_REQUEST['data'];
+    if(empty(sanitize_text_field($input['current_id']))||empty(sanitize_text_field($input['current_album_name']))){
+                die("Mar Nummer oder Album Name fehlen");
+        }
+    $id=sanitize_text_field($input['current_id']);
+    $band_id=sanitize_text_field($input['current_band_id']);
+    $album_list_new=[
+        "Id" => $id,
+        "Album_Name" => sanitize_text_field($input['current_album_name']),
+        "Band_Id" => sanitize_text_field($input['current_band_id']),
+        "Band_Name" => $band_list[$band_id][0]["Band_Name"],
+        "soldout_state" => $input['current_soldout_state'],
+        "Datum" => sanitize_text_field($input['current_date']),
+        "Format" => sanitize_text_field($input['current_format']),
+        "Img_URL" => $input['login_logo_id'],
+        "Shop_Link" => esc_url($input['current_shop_link']),
+        "track_list" => $input['track']
+    ];
+        
+    $album_list_old[$id][0]= $album_list_new;
+        
+    update_option('add-band-band-list',$album_list_old);
+    
+    status_header(200);
+}
+    
+######
+#BAND#
+######
+public function delete_band_list_entry() {
+    $options = get_option('add-band-band-list');
+    unset($options[$_REQUEST['data']]);
+    update_option('add-band-band-list',$options);
+    status_header(200);
+    die("Server received '{$_REQUEST['data']}' from your browser.");
+}
 public function add_band_list_entry() {
-	
+	$uid=uniqid();
     $add_band_add_entry = new Add_band_add_entry();
-    $add_band_add_entry-> add_entry_to_band_list($_REQUEST['add-band']);
+    $add_band_add_entry-> add_entry_to_band_list($_REQUEST['add-band'],$uid);
     $add_band_add_entry-> add_entry_create_post();
     status_header(200);
 }
 public function edit_band_list_entry() {
-	$band_list= get_option('add-band-band-list');
-	$input=$_REQUEST['add-band'];
-	$id=$_REQUEST['id'];
-	var_dump($_REQUEST);
-        $band_list[$id] =
-                [
-			"id" => $id , 
-			"Band_Name" => sanitize_text_field($input['band_name']),  	
-			"Video01" => esc_url($input['video01_name']),  	
-			"Video02" => esc_url($input['video02_name']),  	
-			"Video03" => esc_url($input['video03_name']),  	
-			"Video04" => esc_url($input['video04_name']),  	
-			"Video05" => esc_url($input['video05_name']),  	
-			"Text" => sanitize_text_field($_REQUEST['editor_text']) 
-		];
-        update_option('add-band-band-list',$band_list);
-        status_header(200);
+	$add_band_add_entry = new Add_band_add_entry();
+    var_dump($_REQUEST['add-band']);
+    $add_band_add_entry-> add_entry_to_band_list($_REQUEST['add-band'],$_REQUEST['add-band']['id']);
+    $add_band_add_entry-> add_entry_create_post();
+    status_header(200);
 }
+
 
 
 }

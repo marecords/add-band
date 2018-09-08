@@ -18,7 +18,8 @@
     <?php
     settings_fields($this->plugin_name);
     do_settings_sections($this->plugin_name);
-
+    $band_list = get_option('add-band-band-list');
+    var_dump($band_list);
 ?>
 
 <form action="admin-post.php" method="post">
@@ -27,11 +28,9 @@
 	<input type="text" class="regular-text" id="band_name" name="<?php echo $this->plugin_name; ?>[band_name]"  value="" size="10" /><br>
 	Videos:
 	<br>
-	<input type="text" class="regular-text" id="video01_name" name="<?php echo $this->plugin_name; ?>[video01_name]"  value="" size="10" /><br>
-	<input type="text" class="regular-text" id="video02_name" name="<?php echo $this->plugin_name; ?>[video02_name]"  value="" size="10" /><br>
-	<input type="text" class="regular-text" id="video03_name" name="<?php echo $this->plugin_name; ?>[video03_name]"  value="" size="10" /><br>
-	<input type="text" class="regular-text" id="video04_name" name="<?php echo $this->plugin_name; ?>[video04_name]"  value="" size="10" /><br>
-	<input type="text" class="regular-text" id="video05_name" name="<?php echo $this->plugin_name; ?>[video05_name]"  value="" size="10" /><br>
+    <button id="band_add_video_line_button">Neuen Video hinzufügen</button>
+    <table class="form-table" id="video_list">
+    </table>
 	<?php
 		$settings = array( 'textarea_name' => 'editor_text');
 		$editor_id = 'band_editor';

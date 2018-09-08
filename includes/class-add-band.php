@@ -166,8 +166,9 @@ class Add_Band {
 		$this->loader->add_action('admin_init', $plugin_admin, 'options_update');
 		
 		#Album
-                $this->loader->add_action('admin_post_delete_list_entry', $plugin_admin, 'delete_list_entry');
+                $this->loader->add_action('admin_post_delete_album_list_entry', $plugin_admin, 'delete_album_list_entry');
                 $this->loader->add_action('admin_post_add_album_list_entry', $plugin_admin, 'add_album_list_entry');
+                $this->loader->add_action('admin_post_edit_album_list_entry', $plugin_admin, 'edit_album_list_entry');    
 	
 		#Band
                 $this->loader->add_action('admin_post_delete_band_list_entry', $plugin_admin, 'delete_band_list_entry');

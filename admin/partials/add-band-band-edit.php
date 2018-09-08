@@ -15,27 +15,48 @@
 
 
 
-	<?php
-    		settings_fields($this->plugin_name);
-		do_settings_sections($this->plugin_name);
-		$id = $_REQUEST['id'];
-		$band_list = get_option('add-band-band-list');
-		$band_list_entry = $band_list[$id];
-		var_dump( $band_list_entry);
+    <?php
+        settings_fields($this->plugin_name);
+        do_settings_sections($this->plugin_name);
+        $id = $_REQUEST['id'];
+        $band_list = get_option('add-band-band-list');
+        
+        $band_list_entry=$band_list[$id];
+var_dump($band_list_entry);
+    
 	?>
 
 <form action="admin-post.php" method="post">
     	<input type="hidden" name="action" value="edit_band_list_entry">
-	<input type="hidden" name="id" value="<?php echo $id ?>">
+        <input type="hidden"id="id" name="<?php echo $this->plugin_name; ?>[id]"  value="<?php echo $band_list_entry['id']  ?>"  /><br>
+	
 	Band Name:
 	<input type="text" class="regular-text" id="band_name" name="<?php echo $this->plugin_name; ?>[band_name]"  value="<?php echo $band_list_entry['Band_Name']  ?>" size="10" /><br>
 	Videos:
 	<br>
-	<input type="text" class="regular-text" id="video01_name" name="<?php echo $this->plugin_name; ?>[video01_name]"  value="<?php echo $band_list_entry['Video01']  ?>" size="10" /><br>
-	<input type="text" class="regular-text" id="video02_name" name="<?php echo $this->plugin_name; ?>[video02_name]"  value="<?php echo $band_list_entry['Video02']  ?>" size="10" /><br>
-	<input type="text" class="regular-text" id="video03_name" name="<?php echo $this->plugin_name; ?>[video03_name]"  value="<?php echo $band_list_entry['Video03']  ?>" size="10" /><br>
-	<input type="text" class="regular-text" id="video04_name" name="<?php echo $this->plugin_name; ?>[video04_name]"  value="<?php echo $band_list_entry['Video04']  ?>" size="10" /><br>
-	<input type="text" class="regular-text" id="video05_name" name="<?php echo $this->plugin_name; ?>[video05_name]"  value="<?php echo $band_list_entry['Video05']  ?>" size="10" /><br>
+	Videos:
+	<br>
+    <button id="band_edit_video_line_button" value="<?php echo count($band_list_entry['videolist'])?>" >Neuen Video hinzufügen</button>
+    <table class="form-table" id="video_list">
+        <?php
+            if(array_key_exists('videolist',$band_list_entry)){
+                for($i=1;$i<=count($band_list_entry['videolist']);$i++){    
+        ?>
+                <tr>
+            <td>
+
+                <?php esc_attr_e($i. '.Video' , 'WpAdminStyle' ); ?>
+            </td>
+            <td>
+                <input type="text" class="regular-text" id="track <?php echo $i; ?>"  name="add-band[video][<?php    echo $i; ?>]" value="<?php echo $band_list_entry['videolist'][$i]; ?>" >
+            </td>
+        </tr>
+             
+        <?php 
+                }
+            } 
+        ?>
+    </table>
 	<?php
 		$settings = array( 'textarea_name' => 'editor_text');
 		$editor_id = 'band_editor';

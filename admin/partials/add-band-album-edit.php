@@ -19,20 +19,23 @@
     settings_fields($this->plugin_name);
     do_settings_sections($this->plugin_name);	
     $band_list = get_option('add-band-band-list');
+    $album_list = get_option('add-band-album-list');
+    $id = $_REQUEST['id'];  
+    $album_list_entry=$album_list[$id][0];
+    var_dump($album_list_entry);
+ 
 
 ?>
 
 <form action="admin-post.php" method="post" id="carform">
     <input type="hidden" name="action" value="add_album_list_entry">
     <table class="form-table" id="track_list">
-
-
         <tr>
             <td>
                 <?php esc_attr_e( 'MA-Nummer', 'WpAdminStyle' ); ?>
             </td>
             <td>
-                <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-current_id" name="<?php echo $this->plugin_name; ?>[current_id]" value="MA-Nummer" size="7" /><br>
+                <input type="text" class="regular-text" id="<?php echo $this->plugin_name; ?>-current_id" name="<?php echo $this->plugin_name; ?>[current_id]" value="<?php echo $album_list_entry['Id']  ?>" size="7" /><br>
             </td>
         </tr>
         <tr>
@@ -40,7 +43,7 @@
                 <?php esc_attr_e( 'Album-Name', 'WpAdminStyle' ); ?>
             </td>
             <td>
-                <input type="text" class="regular-text" id="current_album_name" name="<?php echo $this->plugin_name; ?>[current_album_name]" value="Album_Name" size="10" /><br>
+                <input type="text" class="regular-text" id="current_album_name" name="<?php echo $this->plugin_name; ?>[current_album_name]" value="<?php echo $album_list_entry['Album_Name']  ?>" size="10" /><br>
             </td>
         </tr>
         <tr>
@@ -48,17 +51,17 @@
                 <?php esc_attr_e( 'Band-Name', 'WpAdminStyle' ); ?>
             </td>
             <td>
-                <select id="current_band_id" name="<?php echo $this->plugin_name; ?>[current_band_id]" value="Band_id" form="carform">
+                <select id="current_band_name" name="<?php echo $this->plugin_name; ?>[current_band_name]"  value="<?php echo $album_list_entry['Band_Name'] ?>" form="carform">
                     <?php
-                    //foreach ($band_list as ["Band_Name" => $Band_Name,"id"=>$id]){
-                        foreach ($band_list as $val => $val_value){
-                        foreach ($val_value as ["id" => $id, "Band_Name" => $Band_Name ] ){
+                    foreach ($band_list as $val => $val_value){
+                         foreach ($val_value as ["id" => $id, "Band_Name" => $Band_Name ] ){
                     ?>
                     <option value="<?php echo $id ?>">
                         <?php echo $Band_Name ?>
                     </option>
                     <?php
-                    }}
+                    }
+                                       }
                     ?>
                 </select>
             </td>
@@ -68,7 +71,7 @@
                 <?php esc_attr_e( 'Datum', 'WpAdminStyle' ); ?>
             </td>
             <td>
-                <input type="text" class="regular-text" id="current_date" name="<?php echo $this->plugin_name; ?>[current_date]" value="Datum" size="4" /><br>
+                <input type="text" class="regular-text" id="current_date" name="<?php echo $this->plugin_name; ?>[current_date]" value="<?php echo $album_list_entry['Datum']  ?>" size="4" /><br>
             </td>
         </tr>
         <tr>
@@ -76,7 +79,7 @@
                 <?php esc_attr_e( 'Format', 'WpAdminStyle' ); ?>
             </td>
             <td>
-                <input type="text" class="regular-text" id="current_format" name="<?php echo $this->plugin_name; ?>[current_format]" value="Format" size="4" /><br>
+                <input type="text" class="regular-text" id="current_format" name="<?php echo $this->plugin_name; ?>[current_format]" value="<?php echo $album_list_entry['Format']  ?>" size="4" /><br>
             </td>
         </tr>
         <tr>
@@ -87,7 +90,7 @@
                 <fieldset>
                     <legend class="screen-reader-text"><span>
                             <?php esc_attr_e('Login Logo', $this->plugin_name);?></span></legend>
-                    <input type="hidden" id="login_logo_id" name="<?php echo $this->plugin_name;?>[login_logo_id]" value="<?php echo $login_logo_id; ?>" />
+                    <input type="hidden" id="login_logo_id" name="<?php echo $this->plugin_name;?>[login_logo_id]" value="<?php echo $album_list_entry['Img_URL']  ?>" />
                     <input id="upload_login_logo_button" type="button" class="button" value="<?php _e( 'Upload Logo', $this->plugin_name); ?>" />
                 </fieldset>
 
@@ -98,7 +101,7 @@
                 <?php esc_attr_e( 'Shop-Link', 'WpAdminStyle' ); ?>
             </td>
             <td>
-                <input type="text" class="regular-text" id="current_shop_link" name="<?php echo $this->plugin_name; ?>[current_shop_link]" value="Shop Link" /><br>
+                <input type="text" class="regular-text" id="current_shop_link" name="<?php echo $this->plugin_name; ?>[current_shop_link]" value="<?php echo $album_list_entry['Shop_Link']  ?>" /><br>
             </td>
         </tr>
         <tr>
@@ -106,15 +109,15 @@
                 <?php esc_attr_e( 'Soldout', 'WpAdminStyle' ); ?>
             </td>
             <td>
-                <input type="checkbox" id="current_soldout_state" name="<?php echo $this->plugin_name;?>[current_soldout_state]" value="false" />
+                <input type="checkbox" id="current_soldout_state" name="<?php echo $this->plugin_name;?>[current_soldout_state]" value="<?php echo $album_list_entry['soldout_state']  ?>" />
             </td>
         </tr>
-        <tr >
+        <tr>
             <td>
                 <?php esc_attr_e( 'Add Track', 'WpAdminStyle' ); ?>
             </td>
-            <td >
-                <button id="album_add_track_line_button">Neuen Song hinzufügen</button>
+            <td>
+                <button id="album_edit_track_line_button" value="<?php echo count($album_list_entry['track_list']) ?>" />Neuen Song hinzufügen</button>
             </td>
         </tr>
         <tr>
@@ -126,7 +129,20 @@
                 <input type="submit" value="Add Entry">
             </td>
         </tr>
+        <?php
+            for($i=1;$i<=count($album_list_entry['track_list']);$i++){
+        ?>
+                <tr>
+            <td>
 
+                <?php esc_attr_e($i. '.Song' , 'WpAdminStyle' ); ?>
+            </td>
+            <td>
+                <input type="text" class="regular-text id="track <?php echo $i; ?>"  name="add-band[track][<?php    echo $i; ?>]" value="<?php echo $album_list_entry['track_list'][$i]; ?>" >
+            </td>
+        </tr>
+             
+        <?php } ?>
     </table>
 
 </form>
