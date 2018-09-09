@@ -201,6 +201,7 @@ public function add_album_list_entry(){
         $album_list_old= get_option('add-band-album-list');
         $band_list= get_option('add-band-band-list');
         $input=$_REQUEST['add-band'];
+        var_dump($_REQUEST);
  if(empty(sanitize_text_field($input['current_id']))||empty(sanitize_text_field($input['current_album_name']))){
                 die("Mar Nummer oder Album Name fehlen");
         }

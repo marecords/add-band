@@ -22,7 +22,7 @@
 
 ?>
 
-<form action="admin-post.php" method="post">
+<form action="admin-post.php" method="post" id="album-form">
     <input type="hidden" name="action" value="add_album_list_entry">
     <table class="form-table" id="track_list">
         <tr>
@@ -46,7 +46,7 @@
                 <?php esc_attr_e( 'Band-Name', 'WpAdminStyle' ); ?>
             </td>
             <td>
-                <select id="current_band_id" name="<?php echo $this->plugin_name; ?>[current_band_id]" value="Band_id">
+                <select id="current_band_id" name="<?php echo $this->plugin_name; ?>[current_band_id]" value="Band_id" form="album-form">
                     <?php
                         foreach ($band_list as $bands => $band){
                     ?>

@@ -37,6 +37,7 @@
 
 	<?php
         foreach ($album_list as $albums => $album){
+            var_dump($album);
 		$login_logo = wp_get_attachment_image_src( $album['Img_URL'], 'thumbnail' );
         $login_logo_url = $login_logo[0];
 	?>

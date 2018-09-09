@@ -31,15 +31,15 @@ class Add_band_add_entry{
         //foreach ($band_list as $bands => $band){
         $band=$band_list['5b93e76118eea'];
                 if(!in_array($band['Band_Name'],array_column($posts_array,'post_title'))){
-                    $html_page=$this->generate_band_page($band);
+                    $html_page=implode($this->generate_band_page($band));
                     $my_post = array(
                         'post_title'    => $band['Band_Name'],
-                        'post_content'  =>  implode($this->generate_band_page($band)),
+                        'post_content'  =>  $html_page,
                         'post_status'   => 'publish',
                         'post_author'   => 1,
                         'post_category' => array(2)
                     );
-                    //echo $html_page;
+                    print_r($html_page);
                     wp_insert_post( $my_post );
                 }
           //  }
@@ -81,8 +81,7 @@ class Add_band_add_entry{
         array_push($html_page,"<div style=\"float: left;width: 70%;padding: 5px;\"><div style=\"width: 100%;background-color: blue;\" >");
         array_push($html_page,$band_display_info);
         foreach ($album_display_list as $albums => $album){
-            var_dump($album_display_html[$album_id]["info"]);
-            var_dump($album_display_html[$album_id]["listing"]);
+            var_dump([$album_id]);
             array_push($html_page,$album_display_html[$album_id]["info"]);
             array_push($html_page,$album_display_html[$album_id]["listing"]);
         }
